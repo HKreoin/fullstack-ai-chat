@@ -9,7 +9,3 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/v1/chat', [ChatController::class, 'index']);
-
-Route::get('/', function () {
-    return view('welcome');
-});
