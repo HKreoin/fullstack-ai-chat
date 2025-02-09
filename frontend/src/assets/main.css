@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@layer base {
+    body {
+        font-family: 'ui-monospace', monospace;
+    }
+}
+
+@layer components {
+    textarea {
+        @apply block rounded-md border-0 p-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-500  focus:ring-blue-500 bg-white;
+    }
+
+    .btn {
+        @apply flex w-40 justify-center rounded-md px-2 py-1.5 text-sm font-mono font-semibold leading-6 text-white shadow-sm hover:bg-blue-600 bg-blue-500
+    }
+
+    .logo {
+        @apply text-3xl font-bold text-center font-serif italic text-blue-500 py-2 block
+    }
+
+    .title {
+        @apply flex text-2xl italic font-semibold text-gray-900 mb-2 pl-2
+    }
+
+    .speech {
+        @apply bg-red-500 hover:bg-red-600
+    }
+}
