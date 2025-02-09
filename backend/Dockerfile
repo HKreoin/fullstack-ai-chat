@@ -1,23 +1,28 @@
-FROM php:8.2-cli
+FROM php:8.2-fpm
 
-ARG user
-ARG uid
+COPY composer.lock composer.json /var/www/html/
 
-# Устанавливаем необходимые зависимости
+# Set working directory
+WORKDIR /var/www/html/
+
+# Install dependencies for the operating system software
 RUN apt-get update && apt-get install -y \
-    libzip-dev \
+    build-essential \
+    libpng-dev \
     zip \
-    unzip \
-    libonig-dev \
-    libxml2-dev \
-    && docker-php-ext-install pdo_mysql mysqli mbstring zip exif pcntl
+    vim \
+    git \
+    curl
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Install extensions for php
+RUN docker-php-ext-install pdo_mysql
 
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-RUN mkdir -p /home/$user/.composer && \
-    chown -R $user:$user /home/$user
+# Install composer (php package manager)
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-WORKDIR /var/www
+# Copy existing application directory contents to the working directory
+COPY . /var/www/html
 
-USER $user
+# Expose port 9000 and start php-fpm server (for FastCGI Process Manager)
+EXPOSE 9000
+CMD ["php-fpm"]
