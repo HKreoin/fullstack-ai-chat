@@ -1,45 +1,53 @@
+
 services:
-  laravel:
+  #PHP Service
+  backend:
     build:
-      args:
-        user: kreoin
-        uid: 1000
       context: ./backend
-    image: laravel
-    container_name: laravel
+      dockerfile: Dockerfile
+    container_name: backend
     restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: backend
+      SERVICE_TAGS: dev
     working_dir: /var/www/html/
     volumes:
-      - ./:/var/www/html/
-      - ./php/laravel.ini:/usr/local/etc/php/conf.d/laravel.ini
+      - ./backend/:/var/www/html/
+      - ./backend/php/laravel.ini:/usr/local/etc/php/conf.d/laravel.ini
     networks:
-      - chat-network
+      - app-network
 
-  vue:
+  frontend:
+    stdin_open: true
+    container_name: frontend
     build:
       context: ./frontend
-    tty: true
-    container_name: vue
-    working_dir: /var/www
+      dockerfile: Dockerfile
     volumes:
-      - .:/var/www # Монтируем локальную папку в контейнер как /var/www
+      - /app/node_modules
+      - ./frontend:/var/www/html/
     networks:
-      - chat-network
+      - app-network
 
-  nginx:
-    image: nginx:alpine
+  #Nginx Service
+  webserver:
+    depends_on:
+      - backend
+      - frontend
+    build:
+      context: nginx
+      dockerfile: Dockerfile
     container_name: webserver
     restart: unless-stopped
+    tty: true
     ports:
-      - 80:80
-    volumes:
-      - ./:/var/www
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - "80:80"
     networks:
-      - chat-network
-    depends_on:
-      - laravel
-      - vue
+      - app-network
+
+#Docker Networks
 networks:
-  chat-network:
+  app-network:
     driver: bridge
+
