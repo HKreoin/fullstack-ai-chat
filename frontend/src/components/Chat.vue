@@ -67,9 +67,9 @@ const submit = async () => {
           href="/"
       >Smart Chat</a>
     </header>
-    <main>
-      <div class="flex justify-center items-center h-screen">
-        <div class="flex-column">
+    <main class="h-screen">
+      <div class="flex justify-center items-center px-3">
+        <div class="w-full max-w-7xl">
           <form
               action=""
               @submit.prevent="submit"
@@ -81,7 +81,7 @@ const submit = async () => {
                 v-model="form.message"
                 type="text"
                 rows="5"
-                class="w-3xl resize-none mb-2"
+                class="w-full resize-none mb-2"
                 :placeholder="placeholder"
             ></textarea>
             <div class="flex justify-end gap-2">
@@ -94,7 +94,6 @@ const submit = async () => {
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="#ffffff"
-                    version="1.1"
                     id="Capa_1"
                     viewBox="0 0 58 58"
                     xml:space="preserve"
@@ -114,12 +113,11 @@ const submit = async () => {
           </form>
           <div
               v-if="loading"
-
           ><h2 class="title animate-pulse">Ожидание ответа...</h2>
           </div>
           <div
               v-if="answer"
-              class="mt-4 p-4 bg-gray-50 rounded max-w-3xl"
+              class="p-4 bg-gray-50 rounded max-w-7xl mt-2"
           >
             <h2 class="title">Ответ:</h2>
             <p>{{ answer }}</p>

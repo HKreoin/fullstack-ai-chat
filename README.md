@@ -8,13 +8,13 @@
 
 Выполните команду чтобы запустить приложение
 ```
+cd fullstack-ai-chat
 docker compose up --build
 ```
 
 Затем выполните команды (только 1 раз)
 ```
-docker-compose exec app php artisan key:generate
-docker-compose exec app php artisan migrate
+docker compose exec backend php artisan key:generate
 ```
 
 Приложение доступно по адресу localhost
